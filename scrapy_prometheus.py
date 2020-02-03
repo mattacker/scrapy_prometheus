@@ -71,7 +71,7 @@ class PrometheusStatsCollector(statscollectors.StatsCollector):
         registry = self.get_registry(spider)
 
         if name not in registry._names_to_collectors:
-            metric, created = metric_type(name, key, labels, registry=registry), True
+            metric, created = metric_type(name, key, registry=registry), True
         else:
             metric, created = registry._names_to_collectors[name], False
             if not hasattr(metric_type, '__wrapped__') or hasattr(metric_type, '__wrapped__') and not isinstance(metric,
