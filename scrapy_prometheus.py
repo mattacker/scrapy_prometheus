@@ -68,6 +68,9 @@ class PrometheusStatsCollector(statscollectors.StatsCollector):
         prefix = self.crawler.settings.get('PROMETHEUS_METRIC_PREFIX', 'scrapy_prometheus')
         name = '%s_%s' % (prefix, key.replace('/', '_'))
 
+        if metric_type == METRIC_COUNTER:
+            name += '_total'
+
         registry = self.get_registry(spider)
 
         if name not in registry._names_to_collectors:
