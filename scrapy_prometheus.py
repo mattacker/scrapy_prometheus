@@ -67,6 +67,7 @@ class PrometheusStatsCollector(statscollectors.StatsCollector):
     def get_metric(self, key, metric_type, spider=None, labels=None):
         prefix = self.crawler.settings.get('PROMETHEUS_METRIC_PREFIX', 'scrapy_prometheus')
         name = '%s_%s' % (prefix, key.replace('/', '_'))
+        name = name.replace('.', '_')
 
         if metric_type == METRIC_COUNTER:
             name += '_total'
