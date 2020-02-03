@@ -69,6 +69,9 @@ class PrometheusStatsCollector(statscollectors.StatsCollector):
         name = '%s_%s' % (prefix, key.replace('/', '_'))
         name = name.replace('.', '_')
 
+        if "class" in name:
+            return None, False
+
         if metric_type == METRIC_COUNTER:
             name += '_total'
 
