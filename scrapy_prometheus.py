@@ -72,17 +72,17 @@ class PrometheusStatsCollector(statscollectors.StatsCollector):
         if "class" in name:
             return None, False
 
+        prometheus_name = name
         if metric_type == METRIC_COUNTER:
-            name += '_total'
+            prometheus_name += '_total'
 
         registry = self.get_registry(spider)
 
-        if name not in registry._names_to_collectors:
+        if prometheus_name not in registry._names_to_collectors:
             metric, created = metric_type(name, key, registry=registry), True
         else:
-            metric, created = registry._names_to_collectors[name], False
-            if not hasattr(metric_type, '__wrapped__') or hasattr(metric_type, '__wrapped__') and not isinstance(metric,
-                                                                                                                 metric_type.__wrapped__):
+            metric, created = registry._names_to_collectors[prometheus_name], False
+            if not isinstance(metric, metric_type):
                 if not self.crawler.settings.getbool('PROMETHEUS_SUPPRESS_TYPE_CHECK', False):
                     raise InvalidMetricType('Wrong type %s for metric %s, which is %s' % (
                         metric_type.__wrapped__.__name__, name, metric.__class__.__name__
